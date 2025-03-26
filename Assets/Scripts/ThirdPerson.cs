@@ -9,12 +9,11 @@ public class ThirdPerson :MonoBehaviour {
     public float sensitivity = 4;
 
     void Start() {
-        target = GameObject.Find("Player").transform;
+        target = GameObject.Find("PlayerT").transform;
     }
 
     private void LateUpdate() {
-        transform.position = Vector3.Lerp(transform.position,
-            target.position + offset, lerpValue);
+        transform.position = Vector3.Lerp(transform.position,target.position + offset, lerpValue);
 
         offset = Quaternion.AngleAxis(Input.GetAxis("Mouse X") *
             sensitivity, Vector3.up) * offset;

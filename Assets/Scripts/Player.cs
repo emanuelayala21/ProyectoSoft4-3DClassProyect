@@ -9,7 +9,7 @@ public class Player :MonoBehaviour {
 
     public CharacterController player;
 
-    public float playerSpeed = 2.5f;
+    public float playerSpeed = 4.5f;
     public float jumpForce = 5.5f;
     public float gravity = 9.8f;
     public float fallVelocity = 0f;
@@ -19,11 +19,17 @@ public class Player :MonoBehaviour {
     private Vector3 camForward;
     private Vector3 camRight;
 
+    public bool isOnSlope = false;
+    private Vector3 hitNormal;
+    private float  slideVel = 15f;
+    private float slopeForceDown = -10f;
+
     void Start() {
         player = GetComponent<CharacterController>();
     }
 
     void Update() {
+        // Obtener la entrada del jugador
         horizontalMove = Input.GetAxis("Horizontal");
         verticalMove = Input.GetAxis("Vertical");
 
@@ -38,7 +44,7 @@ public class Player :MonoBehaviour {
         player.transform.LookAt(player.transform.position + movePlayer);
 
         SetGravity();
-        PlayerSkill();
+        PlayerSkills();
 
         player.Move(movePlayer * Time.deltaTime);
     }
@@ -54,21 +60,35 @@ public class Player :MonoBehaviour {
         camRight = camRight.normalized;
     }
 
-    void SetGravity() {
-        if(player.isGrounded) {
-            if(fallVelocity < 0) // Solo reiniciar si está cayendo
-                fallVelocity = 0f;
-        } else {
-            fallVelocity -= gravity * Time.deltaTime;
+    public void PlayerSkills() {
+        if(player.isGrounded && Input.GetButtonDown("Jump")) {
+            fallVelocity = jumpForce;
         }
-
         movePlayer.y = fallVelocity;
     }
 
-
-    public void PlayerSkill() {
-        if(player.isGrounded && Input.GetButtonDown("Jump")) {
-            fallVelocity = jumpForce; // Solo modifica fallVelocity
+    void SetGravity() {
+        if(player.isGrounded) {
+            fallVelocity = -gravity * Time.deltaTime;
+        } else {
+            fallVelocity -= gravity * Time.deltaTime;
         }
+        movePlayer.y = fallVelocity;
+        SlideDown();
+    }
+
+    void SlideDown() {
+        isOnSlope = Vector3.Angle(Vector3.up, hitNormal) >= player.slopeLimit;
+        if(isOnSlope) {
+            // Desliza en los ejes X y Z
+            movePlayer.x += ((1 - hitNormal.x) * hitNormal.x) * slideVel;
+            movePlayer.z += ((1 - hitNormal.z) * hitNormal.z) * slideVel;
+            // Aplica la fuerza de deslizamiento en Y
+            movePlayer.y = slopeForceDown;
+        }
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit) {
+        hitNormal = hit.normal;
     }
 }
