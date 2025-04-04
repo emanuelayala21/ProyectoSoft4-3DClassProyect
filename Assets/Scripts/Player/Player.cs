@@ -18,6 +18,7 @@ public class Player :MonoBehaviour {
     public Camera mainCamera;
     private Vector3 camForward;
     private Vector3 camRight;
+    private Animator animator;
 
     public bool isOnSlope = false;
     private Vector3 hitNormal;
@@ -26,6 +27,7 @@ public class Player :MonoBehaviour {
 
     void Start() {
         player = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
     }
 
     void Update() {
@@ -46,6 +48,10 @@ public class Player :MonoBehaviour {
         SetGravity();
         PlayerSkills();
 
+        animator.SetFloat("Velocity", player.velocity.magnitude);
+
+        animator.SetBool("IsGrounded", player.isGrounded);
+
         player.Move(movePlayer * Time.deltaTime);
     }
 
@@ -63,6 +69,7 @@ public class Player :MonoBehaviour {
     public void PlayerSkills() {
         if(player.isGrounded && Input.GetButtonDown("Jump")) {
             fallVelocity = jumpForce;
+            animator.SetTrigger("Jump");
         }
         movePlayer.y = fallVelocity;
     }

@@ -2325,7 +2325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 2, z: -8}
-  lerpValue: 0.227
+  lerpValue: 0.144
   sensitivity: 4
 --- !u!114 &1018395985
 MonoBehaviour:
@@ -2401,7 +2401,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1.8
-  m_Radius: 0.37
+  m_Radius: 0.21
   m_SlopeLimit: 43.26
   m_StepOffset: 0.48
   m_SkinWidth: 0.0001
@@ -32061,8 +32061,8 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132148965720095}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: aa3d1dcc614ed9a4f8c4a8851e5490e6, type: 3}
-  m_Controller: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 960aea8a09cb9d34ca627f825b0534e0, type: 3}
+  m_Controller: {fileID: 9100000, guid: 259d0952cb858934f80246d1d2423cfb, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
